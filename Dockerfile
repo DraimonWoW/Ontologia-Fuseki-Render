@@ -1,20 +1,26 @@
-FROM apache/jena-fuseki:4.9.0
+# 1. Partimos de una imagen que exista en Docker Hub
+FROM iomz/jena-fuseki:latest
+#  o bien: FROM stain/jena-fuseki:3.7.0
 
-# Indica dónde está instalado Fuseki en la imagen oficial
-ENV FUSEKI_HOME=/jena-fuseki
+# 2. Indica dónde está instalado Fuseki (la imagen ya lo usa así)
+ENV FUSEKI_HOME=/fuseki
 
-# Copiamos tu dataset TDB2 a la carpeta que Fuseki espera
-COPY run/databases/Juegos /jena-fuseki/databases/Juegos
+# 3. Pon el working dir (opcional)
+WORKDIR /fuseki
 
-# Copiamos el config.ttl a la raíz de FUSEKI_HOME
-COPY dataset/config.ttl /jena-fuseki/config.ttl
+# 4. Copia tu dataset TDB2
+COPY run/databases/Juegos /fuseki/databases/Juegos
 
-# (Opcional) documentamos que abrimos 3030
+# 5. Copia tu config.ttl corregido
+COPY dataset/config.ttl /fuseki/config.ttl
+
+# 6. Documenta el puerto (Render usará $PORT)
 EXPOSE 3030
 
-# Arrancamos Fuseki a 0.0.0.0:$PORT con tu config
+# 7. Arranca Fuseki usando el entrypoint que ya trae la imagen,
+#    pasándole los flags para host y puerto de Render.
 CMD [ \
-  "--config=/jena-fuseki/config.ttl", \
+  "--config=/fuseki/config.ttl", \
   "--host=0.0.0.0", \
   "--port=${PORT}" \
 ]
