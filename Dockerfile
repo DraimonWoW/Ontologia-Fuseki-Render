@@ -12,5 +12,3 @@ COPY dataset/shiro.ini     /jena-fuseki/shiro.ini
 # Exponer el puerto 3030 (usado por Fuseki)
 EXPOSE 3030
 
-# Comando de arranque sin la opción --host (no es válida)
-CMD ["fuseki-server", "--config=config.ttl", "--port=3030"]
