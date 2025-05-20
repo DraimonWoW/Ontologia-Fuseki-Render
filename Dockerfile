@@ -1,23 +1,20 @@
-# 1. Usamos la imagen oficial de Fuseki
-FROM stain/jena-fuseki:4.0.0
+FROM apache/jena-fuseki:4.9.0
 
-# 2. Le decimos dónde está Fuseki internamente
-ENV FUSEKI_HOME=/fuseki
+# Indica dónde está instalado Fuseki en la imagen oficial
+ENV FUSEKI_HOME=/jena-fuseki
 
-# 2. Creamos el working dir
-WORKDIR /fuseki
+# Copiamos tu dataset TDB2 a la carpeta que Fuseki espera
+COPY run/databases/Juegos /jena-fuseki/databases/Juegos
 
-# 3. Copiamos la base de datos TDB2
-COPY run/databases/Juegos /fuseki/databases/Juegos
+# Copiamos el config.ttl a la raíz de FUSEKI_HOME
+COPY dataset/config.ttl /jena-fuseki/config.ttl
 
-# 4. Copiamos el config de Fuseki
-COPY dataset/config.ttl /fuseki/config.ttl
-
-# 6. Exponemos el puerto 3030
+# (Opcional) documentamos que abrimos 3030
 EXPOSE 3030
 
-# 7. Arrancamos Fuseki con la configuración
-CMD /fuseki/fuseki-server \
-    --config=/fuseki/config.ttl \
-    --host=0.0.0.0 \
-    --port=${PORT}
+# Arrancamos Fuseki a 0.0.0.0:$PORT con tu config
+CMD [ \
+  "--config=/jena-fuseki/config.ttl", \
+  "--host=0.0.0.0", \
+  "--port=${PORT}" \
+]
