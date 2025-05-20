@@ -1,5 +1,5 @@
 # 1. Usamos la imagen oficial de Fuseki
-FROM stain/jena-fuseki:4.9.0
+FROM stain/jena-fuseki:4.0.0
 
 # 2. Creamos el working dir
 WORKDIR /fuseki
