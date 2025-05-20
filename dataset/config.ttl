@@ -5,10 +5,17 @@
 
 [] rdf:type fuseki:Server ;
    fuseki:services (
-     [ fuseki:name          "Juegos"
-       fuseki:datasetConfig <#dataset>
-     ]
+     <#service>
    ) .
 
+<#service> rdf:type fuseki:Service ;
+    fuseki:name            "Juegos" ;                        # Nombre del dataset (aparece en URL)
+    fuseki:serviceQuery    "sparql" ;                        # Habilita consultas SPARQL
+    fuseki:serviceUpdate   "update" ;                        # Habilita actualizaciones SPARQL
+    fuseki:serviceReadGraphStore  "get" ;                    # Habilita lectura vía HTTP GET
+    fuseki:serviceReadWriteGraphStore "data" ;               # Habilita lectura/escritura con Graph Store Protocol
+    fuseki:dataset         <#dataset> ;
+    fuseki:permission      fuseki:public .                   # 🔓 Hace el dataset público (sin login)
+
 <#dataset> rdf:type      tdb2:DatasetTDB2 ;
-           tdb2:location "/fuseki/databases/Juegos" .
+           tdb2:location "/fuseki/databases/Juegos" .        # Ruta en disco (ajústala según tu contenedor)
