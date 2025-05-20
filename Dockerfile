@@ -17,7 +17,7 @@ ENV FUSEKI_CONFIG=/fuseki/config.ttl
 EXPOSE 3030
 
 # 7. Arrancamos Fuseki con la configuración
-CMD ["fuseki-server",
-     "--config=/fuseki/config.ttl",
-     "--port=3030",
-     "--host=0.0.0.0"]
+CMD fuseki-server \
+    --config=/fuseki/config.ttl \
+    --port=3030 \
+    --host=0.0.0.0
