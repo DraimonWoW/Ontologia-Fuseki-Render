@@ -12,8 +12,4 @@ COPY dataset/shiro.ini     /jena-fuseki/shiro.ini
 # Exponer el puerto 3030 (usado por Fuseki)
 EXPOSE 3030
 
-CMD [
-  "--port=${PORT:-3030}",
-  "--host=0.0.0.0",
-  "--config=/jena-fuseki/config.ttl"
-]
+CMD ["fuseki-server", "--port=${PORT:-3030}", "--host=0.0.0.0", "--config=/jena-fuseki/config.ttl"]
