@@ -1,0 +1,6 @@
+# Ignorar logs y locks locales
+*.log
+*.lock
+
+# Git
+.git
