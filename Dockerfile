@@ -1,26 +1,24 @@
-# 1. Partimos de una imagen que exista en Docker Hub
-FROM iomz/jena-fuseki:latest
-#  o bien: FROM stain/jena-fuseki:3.7.0
+# 1. Imagen base (sabe arrancar Fuseki + entrypoint que maneja shiro.ini)
+FROM stain/jena-fuseki:4.0.0
 
-# 2. Indica dónde está instalado Fuseki (la imagen ya lo usa así)
+# 2. Dónde está Fuseki
 ENV FUSEKI_HOME=/fuseki
 
-# 3. Pon el working dir (opcional)
+# 3. Carpeta de trabajo (opcional)
 WORKDIR /fuseki
 
-# 4. Copia tu dataset TDB2
+# 4. Copiamos tu dataset TDB2
 COPY run/databases/Juegos /fuseki/databases/Juegos
 
-# 5. Copia tu config.ttl corregido
+# 5. Copiamos tu configuración de servicios
 COPY dataset/config.ttl /fuseki/config.ttl
 
-# 6. Documenta el puerto (Render usará $PORT)
+# 6. Copiamos el nuevo shiro.ini al directorio que espera el entrypoint
+COPY dataset/shiro.ini  /fuseki/shiro.ini
+
+# 7. Exponemos el puerto (documental; Render usa $PORT)
 EXPOSE 3030
 
-# 7. Arranca Fuseki usando el entrypoint que ya trae la imagen,
-#    pasándole los flags para host y puerto de Render.
-CMD [ \
-  "--config=/fuseki/config.ttl", \
-  "--host=0.0.0.0", \
-  "--port=${PORT}" \
-]
+# 8. Ejecutamos el entrypoint con los flags para host y puerto
+#    El entrypoint hará internamente: exec fuseki-server "$@"
+CMD ["--config=/fuseki/config.ttl","--host=0.0.0.0","--port=${PORT}"]
