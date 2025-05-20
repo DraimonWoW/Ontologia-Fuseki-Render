@@ -9,5 +9,5 @@ COPY dataset/shiro.ini     /fuseki/shiro.ini
 
 EXPOSE 3030
 
-# ENTRYPOINT de la imagen se encarga de invocar fuseki-server "$@"
-CMD ["--config=/fuseki/config.ttl", "--host=0.0.0.0", "--port=3030"]
+# Aquí indicamos explícitamente el comando fuseki-server
+CMD ["fuseki-server", "--config=/fuseki/config.ttl", "--host=0.0.0.0", "--port=3030"]
